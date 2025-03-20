@@ -7,9 +7,21 @@
 
 import SwiftUI
 
+import SwiftUI
+
 struct ContentView: View {
+    @StateObject private var viewModel = LoginViewModel() // Share the model
+
     var body: some View {
-        LoginView()
+ 
+            if viewModel.isLoggedIn, let currentUser = viewModel.currentUser {
+                // Login TRUE
+                HomeScreen(user: currentUser)
+            } else {
+                // Login FALSE
+                LoginView(viewModel: viewModel)
+            
+        }
     }
 }
 

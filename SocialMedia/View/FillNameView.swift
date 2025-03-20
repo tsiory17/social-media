@@ -116,7 +116,7 @@ struct FillNameView: View {
                         .padding(20)
                         VStack {
                             NavigationLink {
-                                LoginView()
+                                LoginView(viewModel: LoginViewModel())
                             } label: {
                                 Text("Have an account already?")
                                     .fontWeight(.light)

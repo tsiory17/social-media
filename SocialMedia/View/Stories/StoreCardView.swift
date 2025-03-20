@@ -1,18 +1,44 @@
 //
-//  StoreCardView.swift
-//  SocialMedia
+//  StoriesCardView.swift
+//  FacebookUIChallenge
 //
-//  Created by Thiago Padilha on 2025-03-19.
+//  Created by Roan Thai Quynh Vy on 6/2/25.
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
-struct StoreCardView: View {
+struct StoriesCardView: View {
+    let story: StoryModel
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+        ZStack(alignment: .topLeading) {
+            WebImage(url: URL(string: story.storyImage))
+                .resizable()
+                .scaledToFill()
+                .frame(width: 200, height: 350)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
 
-#Preview {
-    StoreCardView()
+            WebImage(url: URL(string: story.profileImage))
+                .resizable()
+                .scaledToFill()
+                .frame(width: 50, height: 50)
+                .clipShape(Circle())
+                .overlay(Circle().stroke(Color.blue, lineWidth: 3))
+                .offset(x: 10, y: 10)
+
+            VStack {
+                Spacer()
+                Text("\(story.firstName) \(story.lastName)")
+                    .foregroundColor(.white)
+                    .bold()
+                    .font(.title3)
+                    .padding()
+                    .frame(width: 170, height: 50)
+            }
+        }
+        .frame(width: 200, height: 350)
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .shadow(radius: 5)
+    }
 }
