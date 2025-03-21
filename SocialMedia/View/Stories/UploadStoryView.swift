@@ -2,79 +2,65 @@
 //  UploadStoryView.swift
 //  SocialMedia
 //
-//  Created by Duizzz on 16/3/25.
+//  Created by Duizzz on 20/3/25.
 //
 
 import SwiftUI
 import PhotosUI
 
 struct UploadStoryView: View {
-    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var showingImagePicker = false
     @State private var selectedImage: UIImage?
-    @State private var isUploading = false
-    @EnvironmentObject var firestoreService: FirestoreService
-    let user: User
+    @StateObject var storyManager = FirestoreStoryManager()
+
+    // Dummy user (replace with actual user management)
+    let user = User(id: "123", firstName: "Duy", lastName: "Roan", age: 25, email: "duy@gmail.com", isCurrentUser: true, profileImage: "avatar 1")
 
     var body: some View {
-        VStack {
-            if let image = selectedImage {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 300)
-            } else {
-                PhotosPicker("Select Image", selection: $selectedItem, matching: .images)
-                    .onChange(of: selectedItem) { newItem in
-                        loadImage(from: newItem)
-                    }
-                    .padding()
-            }
+        NavigationView {
+            VStack {
+                if let selectedImage = selectedImage {
+                    Image(uiImage: selectedImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 300)
+                        .onTapGesture {
+                            showingImagePicker = true
+                        }
+                } else {
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(height: 300)
+                        .overlay(Text("Tap to select an image").foregroundColor(.white))
+                        .onTapGesture {
+                            showingImagePicker = true
+                        }
+                }
 
-            if isUploading {
-                ProgressView()
-            } else {
                 Button("Upload Story") {
-                    isUploading = true
-                    uploadStory()
+                    if let selectedImage = selectedImage, let imageData = selectedImage.jpegData(compressionQuality: 0.8) {
+                        storyManager.uploadStory(user: user, imageData: imageData) { success in
+                            if success {
+                                print("Story uploaded successfully!")
+                            } else {
+                                print("Failed to upload story.")
+                            }
+                        }
+                    }
                 }
-                .disabled(selectedImage == nil)
                 .padding()
+                Spacer()
             }
-        }
-        .navigationTitle("Add Story")
-    }
-
-    private func loadImage(from item: PhotosPickerItem?) {
-        guard let item else { return }
-        
-        item.loadTransferable(type: Data.self) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let data):
-                    if let data, let uiImage = UIImage(data: data) {
-                        self.selectedImage = uiImage
-                    }
-                case .failure(let error):
-                    print("Error loading image: \(error.localizedDescription)")
-                }
+            .navigationTitle("Upload Story")
+            .sheet(isPresented: $showingImagePicker) {
+                ImagePicker(image: $selectedImage)
             }
         }
     }
+}
 
-    private func uploadStory() {
-        guard let image = selectedImage else { return }
 
-        ImageUploader.uploadImage(image) { url in
-            if let url = url {
-                firestoreService.addStory(user: user, storyImageURL: url) { success in
-                    isUploading = false
-                    if success {
-                        print("Story uploaded successfully")
-                    } else {
-                        print("Story upload failed")
-                    }
-                }
-            }
-        }
-    }
+
+#Preview {
+    UploadStoryView()
 }

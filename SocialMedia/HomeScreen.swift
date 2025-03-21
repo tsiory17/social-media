@@ -36,19 +36,21 @@ struct HomeScreen: View {
                 
                 //  Main Content
                 ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: 20) {
-                        SearchBar()
-                        Divider()
-                        
-                        StoryView(user: user)
+                    VStack(spacing: 16) {
+                        Text("Welcome, \(user.firstName)!")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .padding(.top, 20)
 
-                        RoundedRectangle(cornerRadius: 0)
-                            .frame(height: 10)
-                            .foregroundColor(Color.gray.opacity(0.3))
-                            .padding(.vertical)
+                        PostView(currentUser: user)
+                            .frame(maxWidth: .infinity)
+                            .padding(.horizontal)
                     }
-                    .padding(.horizontal)
+                    .padding(.bottom, 20)
                 }
+                
+                .navigationBarTitleDisplayMode(.inline)
+                
             }
         }
     }
@@ -56,6 +58,6 @@ struct HomeScreen: View {
 
 //Dummy data
 #Preview {
-    HomeScreen(user: User(id: "123", firstName: "John", lastName: "Doe", age: 25, email: "john@example.com", isCurrentUser: true))
+    HomeScreen(user: User(id: "", firstName: "Duy", lastName: "Roan", age: 25, email: "duy@gmail.com", isCurrentUser: true, profileImage: "avatar 1"))
         .environmentObject(LoginViewModel()) // Add LoginViewModel to preview
 }

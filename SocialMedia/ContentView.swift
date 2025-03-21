@@ -26,6 +26,13 @@ struct ContentView: View {
                                 Text("Home")
                             }
                             .tag(0)
+                        
+                        StoryView()
+                            .tabItem {
+                                Image(systemName: "photo.fill.on.rectangle.fill")
+                                Text("Story")
+                            }
+                            .tag(1)
 
                         // Aba 2: ProfileView
                         ProfileView(user: currentUser)
@@ -33,7 +40,7 @@ struct ContentView: View {
                                 Image(systemName: "person.fill")
                                 Text("Profile")
                             }
-                            .tag(1)
+                            .tag(2)
 
                         // Aba 3: SettingsView
                         SettingsView()
@@ -41,7 +48,7 @@ struct ContentView: View {
                                 Image(systemName: "gearshape.fill")
                                 Text("Settings")
                             }
-                            .tag(2)
+                            .tag(3)
                     }
                     .accentColor(.blue)
                     .environmentObject(viewModel) // Pass LoginViewModel view of  TabView

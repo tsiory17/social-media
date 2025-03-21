@@ -19,8 +19,8 @@ class AuthentificationService : ObservableObject {
     }
     
     @MainActor
-    private func uploadUserData(firstName: String , lastName: String , age: Int , email: String , id: String) async throws {
-        let user = User(id: id, firstName: firstName, lastName: lastName, age: age, email: email, isCurrentUser: true)
+    private func uploadUserData(firstName: String , lastName: String , age: Int , email: String , id: String, profileImage: String? = nil) async throws {
+        let user = User(id: id, firstName: firstName, lastName: lastName, age: age, email: email, isCurrentUser: true, profileImage: profileImage)
         guard let userData = try? Firestore.Encoder().encode(user) else {return}
         
         try await Firestore.firestore().collection("users").document(id).setData(userData)

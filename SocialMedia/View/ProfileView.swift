@@ -83,13 +83,6 @@ struct InfoRow: View {
 
 #Preview {
     NavigationStack {
-        ProfileView(user: User(
-            id: "123",
-            firstName: "John",
-            lastName: "Doe",
-            age: 25,
-            email: "john@example.com",
-            isCurrentUser: true
-        ))
+        ProfileView(user: User(id: "", firstName: "Duy", lastName: "Roan", age: 25, email: "duy@gmail.com", isCurrentUser: true, profileImage: "avatar 1"))
     }
 }

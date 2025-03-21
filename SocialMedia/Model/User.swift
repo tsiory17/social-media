@@ -12,4 +12,5 @@ struct User: Codable {
     let age: Int
     let email: String
     let isCurrentUser: Bool
+    let profileImage: String?
 }

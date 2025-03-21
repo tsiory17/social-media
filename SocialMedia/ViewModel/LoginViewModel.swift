@@ -53,7 +53,8 @@ class LoginViewModel: ObservableObject {
                         lastName: data["lastName"] as? String ?? "",
                         age: data["age"] as? Int ?? 0,
                         email: data["email"] as? String ?? "",
-                        isCurrentUser: true
+                        isCurrentUser: true,
+                        profileImage: "avatar 1"
                     )
                     isLoggedIn = true // To navigate after login
                 }
