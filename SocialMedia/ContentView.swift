@@ -7,24 +7,56 @@
 
 import SwiftUI
 
-import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = LoginViewModel() // Share the model
+    @StateObject private var viewModel = LoginViewModel()
+    @StateObject private var fillNameViewModel = FillNameViewModel() //  FillNameViewModel instance
+    @State private var selectedTab = 0
 
     var body: some View {
- 
-            if viewModel.isLoggedIn, let currentUser = viewModel.currentUser {
-                // Login TRUE
-                HomeScreen(user: currentUser)
-            } else {
-                // Login FALSE
-                LoginView(viewModel: viewModel)
-            
+        NavigationView {
+            Group {
+                if viewModel.isLoggedIn, let currentUser = viewModel.currentUser {
+                    // If user Logged, display Tabview
+                    TabView(selection: $selectedTab) {
+                        // Aba 1: HomeScreen
+                        HomeScreen(user: currentUser)
+                            .tabItem {
+                                Image(systemName: "house.fill")
+                                Text("Home")
+                            }
+                            .tag(0)
+
+                        // Aba 2: ProfileView
+                        ProfileView(user: currentUser)
+                            .tabItem {
+                                Image(systemName: "person.fill")
+                                Text("Profile")
+                            }
+                            .tag(1)
+
+                        // Aba 3: SettingsView
+                        SettingsView()
+                            .tabItem {
+                                Image(systemName: "gearshape.fill")
+                                Text("Settings")
+                            }
+                            .tag(2)
+                    }
+                    .accentColor(.blue)
+                    .environmentObject(viewModel) // Pass LoginViewModel view of  TabView
+                } else {
+                    // Otherwise display Login
+                    LoginView(viewModel: viewModel)
+                        .environmentObject(fillNameViewModel) // Injeta o FillNameViewModel no ambiente
+                }
+            }
         }
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(LoginViewModel())
+        .environmentObject(FillNameViewModel())
 }

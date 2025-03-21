@@ -12,7 +12,7 @@ struct SearchBar: View {
         VStack(spacing: 5) { // Reduce spacing between elements
             
             HStack(alignment: .center, spacing: 5) {
-                Text("social media")
+                Text("Social Media")
                     .foregroundColor(.blue)
                     .font(.title)
                     .padding(.leading, 5)

@@ -8,9 +8,6 @@
 import FirebaseAuth
 import FirebaseFirestore
 
-import FirebaseAuth
-import FirebaseFirestore
-
 class LoginViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
@@ -18,6 +15,24 @@ class LoginViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var currentUser: User?
     @Published var isLoading = false
+    
+    // Logout func
+    func signOut() {
+        do {
+            try Auth.auth().signOut() // Perform Logout
+            isLoggedIn = false // Update Login
+            currentUser = nil // Remove user
+            clearFields() // Clear the fields
+        } catch {
+            errorMessage = "Failed to sign out: \(error.localizedDescription)"
+        }
+    }
+    
+    // Func to clear fields on Logout
+        func clearFields() {
+            email = ""
+            password = ""
+        }
 
     func login() async {
         isLoading = true

@@ -35,6 +35,7 @@ class AuthentificationService : ObservableObject {
             try await uploadUserData(firstName: firstName, lastName: lastName, age: age, email: email, id: result.user.uid)
         } catch {
             print("User not created \(error.localizedDescription)")
+            throw error // to be dealt on the caller
         }
         
     }
